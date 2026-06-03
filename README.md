@@ -1,48 +1,43 @@
-# W8 Day 1 - Terraform Fundamentals (IaC Overview + HCL Syntax)
+# W8 Reflection Report
 
-**Date:** 01/06/2026
+## Terraform & Kubernetes Foundations
+
+**Student:** Bùi Thị Thùy Trang
+**Week:** W8
+**Period:** 01/06/2026 – 03/06/2026
 **Track:** Cloud / DevOps Phase 2
-**Topic:** Terraform Part 1 - Infrastructure as Code (IaC) & HCL Fundamentals
 
 ---
 
-# Learning Objectives
+# 1. Overview
 
-After completing Day 1, I should be able to:
+Trong tuần 8, em tập trung vào hai chủ đề quan trọng của Cloud & DevOps:
 
-* Explain Infrastructure as Code (IaC).
-* Explain why Cloud/DevOps teams use Terraform.
-* Understand Terraform architecture and workflow.
-* Understand HCL syntax.
-* Explain Provider, Resource, Variable, Output, Local and Data blocks.
-* Understand the purpose of Terraform State.
-* Create and execute a simple Terraform project.
+1. Terraform Fundamentals & State Management
+2. Kubernetes Basics & Core Production Concepts
+
+Mục tiêu của tuần là hiểu cách quản lý hạ tầng bằng Infrastructure as Code (IaC) và cách vận hành ứng dụng containerized trên Kubernetes.
 
 ---
 
-# What is Infrastructure as Code (IaC)?
+# 2. Day 1 – Terraform Fundamentals
 
-Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure through code instead of manually creating resources through a web console.
+## Nội dung đã học
 
-Traditional approach:
+### Infrastructure as Code (IaC)
 
-1. Login to AWS Console
-2. Create VPC
-3. Create Security Group
-4. Create EC2
-5. Create S3 Bucket
+Em hiểu rằng Infrastructure as Code là phương pháp quản lý hạ tầng bằng code thay vì thao tác thủ công trên AWS Console.
 
-Problems:
+Thay vì tạo:
 
-* Time consuming
-* Human errors
-* Difficult to reproduce
-* No version control
-* Hard to review changes
+* VPC
+* EC2
+* RDS
+* Security Group
 
-IaC solves these problems by defining infrastructure in code.
+bằng tay, ta có thể định nghĩa bằng Terraform.
 
-Example:
+Ví dụ:
 
 ```hcl
 resource "aws_instance" "web" {
@@ -50,436 +45,87 @@ resource "aws_instance" "web" {
 }
 ```
 
-Benefits of IaC:
+---
 
-* Automation
-* Version Control
-* Consistency
-* Reusability
-* Collaboration
-* Auditability
+### Terraform
+
+Terraform là công cụ IaC của HashiCorp.
+
+Terraform hoạt động theo mô hình Declarative:
+
+Không mô tả từng bước thực hiện mà mô tả trạng thái mong muốn của hệ thống.
 
 ---
 
-# What is Terraform?
+### Terraform Workflow
 
-Terraform is an Infrastructure as Code (IaC) tool developed by HashiCorp.
-
-Terraform allows engineers to define infrastructure using code and automatically provision resources through cloud provider APIs.
-
-Terraform supports:
-
-* AWS
-* Azure
-* Google Cloud
-* Kubernetes
-* Docker
-* GitHub
-* Many other providers
-
-Terraform uses a declarative approach.
-
-Instead of saying:
-
-"Create an EC2 instance"
-
-we describe:
-
-"I want one EC2 instance"
-
-Terraform figures out how to achieve that desired state.
-
----
-
-# Terraform Architecture
-
-```text
-Developer
-    ↓
-Terraform Configuration (.tf)
-    ↓
-Terraform CLI
-    ↓
-Provider
-    ↓
-Cloud API
-    ↓
-Infrastructure
-```
-
-Example with AWS:
-
-```text
-Developer
-    ↓
-terraform apply
-    ↓
-AWS Provider
-    ↓
-AWS API
-    ↓
-EC2 Instance
-```
-
-Example with Local Provider:
-
-```text
-Developer
-    ↓
-terraform apply
-    ↓
-Local Provider
-    ↓
-student.txt
-```
-
----
-
-# Terraform Workflow
-
-Terraform follows a Desired State model.
+Em đã thực hành quy trình:
 
 ```text
 Write Configuration
         ↓
 terraform init
         ↓
-Download Providers
-        ↓
 terraform validate
-        ↓
-Validate Configuration
         ↓
 terraform plan
         ↓
-Generate Execution Plan
-        ↓
-terraform apply
-        ↓
-Create/Modify Infrastructure
-        ↓
-Update State File
-```
-
----
-
-## terraform init
-
-Purpose:
-
-* Initialize project
-* Download providers
-* Create .terraform directory
-
-Command:
-
-```bash
-terraform init
-```
-
----
-
-## terraform validate
-
-Purpose:
-
-* Validate Terraform syntax
-
-Command:
-
-```bash
-terraform validate
-```
-
----
-
-## terraform plan
-
-Purpose:
-
-* Compare Desired State and Current State
-* Generate execution plan
-
-Command:
-
-```bash
-terraform plan
-```
-
-Example:
-
-```text
-Plan: 1 to add, 0 to change, 0 to destroy
-```
-
-Meaning:
-
-* Add 1 resource
-* Change 0 resources
-* Destroy 0 resources
-
----
-
-## terraform apply
-
-Purpose:
-
-* Execute planned changes
-
-Command:
-
-```bash
 terraform apply
 ```
 
-Terraform will ask for confirmation before applying changes.
+Hiểu được ý nghĩa của từng lệnh:
+
+| Command            | Mục đích             |
+| ------------------ | -------------------- |
+| terraform init     | Khởi tạo project     |
+| terraform validate | Kiểm tra syntax      |
+| terraform plan     | Xem thay đổi dự kiến |
+| terraform apply    | Thực thi thay đổi    |
+| terraform destroy  | Xóa resource         |
 
 ---
 
-## terraform destroy
+### HCL Fundamentals
 
-Purpose:
+Các block quan trọng:
 
-* Remove infrastructure managed by Terraform
+* terraform
+* provider
+* resource
+* variable
+* output
+* local
+* data
 
-Command:
+Ví dụ:
 
-```bash
-terraform destroy
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
 ```
 
 ---
 
-# Terraform State
+### Terraform State
 
-Terraform stores infrastructure information inside:
+Terraform lưu trạng thái hạ tầng trong:
 
 ```text
 terraform.tfstate
 ```
 
-State contains:
+State giúp Terraform biết:
 
-* Resource information
-* Resource IDs
-* Resource attributes
-* Dependency relationships
-
-Terraform uses state to:
-
-* Track resources
-* Detect changes
-* Create execution plans
-* Avoid duplicate resources
-
-Example:
-
-Current State:
-
-```text
-student.txt exists
-```
-
-Desired State:
-
-```text
-student.txt exists
-```
-
-Result:
-
-```text
-No changes.
-Infrastructure is up-to-date.
-```
-
-Without state, Terraform would not know what resources already exist.
+* Resource nào đã tồn tại
+* Resource nào cần tạo
+* Resource nào cần cập nhật
 
 ---
 
-# HCL (HashiCorp Configuration Language)
+### Hands-on
 
-Terraform uses HCL to define infrastructure.
-
-Basic structure:
-
-```hcl
-block_type "label1" "label2" {
-  argument = value
-}
-```
-
-Example:
-
-```hcl
-resource "aws_instance" "web" {
-  instance_type = "t2.micro"
-}
-```
-
----
-
-# Common Terraform Blocks
-
-## terraform block
-
-Used to configure Terraform itself.
-
-```hcl
-terraform {
-  required_version = ">= 1.0"
-}
-```
-
----
-
-## provider block
-
-Defines how Terraform connects to a platform.
-
-Example:
-
-```hcl
-provider "aws" {
-  region = "ap-southeast-1"
-}
-```
-
-Provider examples:
-
-* AWS
-* Azure
-* Google
-* Kubernetes
-* Docker
-* Local
-
----
-
-## resource block
-
-Represents infrastructure managed by Terraform.
-
-Example:
-
-```hcl
-resource "aws_s3_bucket" "learning" {
-  bucket = "learning-bucket"
-}
-```
-
-Resource examples:
-
-* aws_instance
-* aws_s3_bucket
-* aws_vpc
-* kubernetes_deployment
-* local_file
-
----
-
-## variable block
-
-Defines input values.
-
-Example:
-
-```hcl
-variable "student_name" {
-  type = string
-}
-```
-
-Benefits:
-
-* Reusable
-* Flexible
-* Easier maintenance
-
----
-
-## output block
-
-Displays values after apply.
-
-Example:
-
-```hcl
-output "file_name" {
-  value = local_file.student.filename
-}
-```
-
----
-
-## locals block
-
-Defines reusable local values.
-
-Example:
-
-```hcl
-locals {
-  project_name = "aws-accelerator"
-}
-```
-
----
-
-## data block
-
-Reads existing information without creating resources.
-
-Example:
-
-```hcl
-data "aws_caller_identity" "current" {}
-```
-
-Used when:
-
-* Reading existing AWS resources
-* Reading account information
-* Looking up AMI IDs
-
----
-
-# Hands-on Practice
-
-## Project Structure
-
-```text
-day-a/
-├── main.tf
-├── variables.tf
-├── outputs.tf
-├── terraform.tfvars
-├── terraform.tfstate
-└── student.txt
-```
-
----
-
-## variables.tf
-
-```hcl
-variable "student_name" {
-  description = "Student name"
-  type        = string
-}
-```
-
----
-
-## terraform.tfvars
-
-```hcl
-student_name = "Bui Thi Thuy Trang"
-```
-
----
-
-## main.tf
+Em đã thực hành:
 
 ```hcl
 resource "local_file" "student" {
@@ -488,106 +134,628 @@ resource "local_file" "student" {
 }
 ```
 
----
-
-## outputs.tf
-
-```hcl
-output "file_name" {
-  value = local_file.student.filename
-}
-```
-
----
-
-# Commands Executed
-
-Initialize project:
+và chạy:
 
 ```bash
 terraform init
-```
-
-Validate configuration:
-
-```bash
 terraform validate
-```
-
-Generate execution plan:
-
-```bash
 terraform plan
-```
-
-Apply changes:
-
-```bash
 terraform apply
 ```
 
 ---
 
-# Results
+## Điều em hiểu rõ
 
-Terraform successfully created:
+* Khái niệm IaC
+* Terraform workflow
+* HCL syntax cơ bản
+* Resource, Variable, Output
+* Vai trò của Terraform State
+
+---
+
+## Điều cần học thêm
+
+* Backend configuration
+* Remote State
+* Terraform Modules
+* Production Terraform Structure
+
+---
+
+# 3. Day 2 – Kubernetes Basics
+
+## Nội dung đã học
+
+### Kubernetes Overview
+
+Kubernetes là nền tảng orchestration dùng để:
+
+* Deploy container
+* Scaling
+* Load balancing
+* Service discovery
+* Rolling update
+* Self-healing
+
+---
+
+### Cluster Architecture
+
+Kiến trúc cơ bản:
 
 ```text
-student.txt
+Cluster
+│
+├── Control Plane
+│   ├── API Server
+│   ├── Scheduler
+│   ├── Controller Manager
+│   └── etcd
+│
+└── Worker Nodes
+    └── Pods
 ```
 
-Content:
+---
+
+### Pod
+
+Pod là đơn vị deploy nhỏ nhất trong Kubernetes.
+
+Một Pod có thể chứa:
+
+* Một container
+* Nhiều container liên quan
+
+---
+
+### Deployment
+
+Deployment chịu trách nhiệm:
+
+* Tạo Pod
+* Scale Pod
+* Rolling Update
+* Rollback
+
+Flow:
 
 ```text
-Bui Thi Thuy Trang
+Deployment
+      ↓
+ReplicaSet
+      ↓
+Pods
 ```
 
-Output:
+---
 
-```text
-file_name = "student.txt"
+### Service
+
+Service cung cấp:
+
+* Stable IP
+* DNS
+* Load Balancing
+
+Các loại:
+
+* ClusterIP
+* NodePort
+* LoadBalancer
+* ExternalName
+
+---
+
+### Labels & Selectors
+
+Labels giúp phân loại tài nguyên.
+
+Ví dụ:
+
+```yaml
+app: backend
+env: dev
+version: v1
 ```
 
-Terraform also generated:
+Service sử dụng selector để tìm Pod phù hợp.
+
+---
+
+### Scaling
+
+Scale thủ công:
+
+```bash
+kubectl scale deployment app --replicas=4
+```
+
+ReplicaSet đảm bảo số lượng Pod đúng với desired state.
+
+---
+
+### Rolling Update & Rollback
+
+Update image:
+
+```bash
+kubectl set image deployment app ...
+```
+
+Kiểm tra:
+
+```bash
+kubectl rollout status deployment app
+```
+
+Rollback:
+
+```bash
+kubectl rollout undo deployment app
+```
+
+---
+
+## Điều em hiểu rõ
+
+* Cluster Architecture
+* Pod
+* Deployment
+* Service
+* ReplicaSet
+* Rolling Update
+* Rollback
+
+---
+
+## Điều cần học thêm
+
+* Networking trong Kubernetes
+* Storage
+* Production Architecture
+* Monitoring
+
+---
+
+# 4. Day 3 – Terraform Advanced & Kubernetes Production Concepts
+
+## Terraform State Management
+
+### Local State
+
+Lưu trên máy local:
 
 ```text
+terraform.tfstate
+```
+
+Phù hợp:
+
+* Learning
+* Personal Project
+
+---
+
+### Remote State
+
+Production thường dùng:
+
+```text
+S3
++
+DynamoDB
+```
+
+Ví dụ:
+
+```text
+Terraform
+    ↓
+S3 Backend
+    ↓
+State File
+```
+
+---
+
+### State Locking
+
+Khi nhiều người cùng làm việc:
+
+```text
+Engineer A
+terraform apply
+
+Engineer B
+terraform apply
+```
+
+Nếu cùng ghi vào state sẽ gây xung đột.
+
+DynamoDB Locking giúp:
+
+```text
+Acquire Lock
+        ↓
+Apply
+        ↓
+Release Lock
+```
+
+Ngăn chặn corruption của state.
+
+---
+
+## Terraform Modules
+
+Module tương tự function trong lập trình.
+
+Cấu trúc:
+
+```text
+modules/
+└── ec2/
+    ├── main.tf
+    ├── variables.tf
+    └── outputs.tf
+```
+
+Ví dụ gọi module:
+
+```hcl
+module "web" {
+  source = "./modules/ec2"
+}
+```
+
+Lợi ích:
+
+* Reusable
+* Maintainable
+* Scalable
+* Standardized
+
+---
+
+## Terraform Best Practices
+
+### Không hard-code
+
+Sử dụng:
+
+```hcl
+var.environment
+```
+
+thay vì:
+
+```hcl
+"dev"
+```
+
+---
+
+### Naming Convention
+
+Ví dụ:
+
+```text
+dev-web-ec2
+staging-web-ec2
+prod-web-ec2
+```
+
+---
+
+### Folder Structure
+
+```text
+main.tf
+variables.tf
+outputs.tf
+providers.tf
+versions.tf
+```
+
+---
+
+### Không commit state
+
+```gitignore
 terraform.tfstate
 terraform.tfstate.backup
 ```
 
 ---
 
-# Key Takeaways
+## ADR (Architecture Decision Record)
 
-Today I learned:
+ADR là tài liệu giải thích:
 
-* What Infrastructure as Code is.
-* Why Terraform is widely used in Cloud and DevOps.
-* Terraform architecture and workflow.
-* HCL syntax fundamentals.
-* The purpose of Provider, Resource, Variable, Output, Local and Data blocks.
-* The role of terraform.tfstate.
-* How to create and execute a simple Terraform project.
+* Tại sao chọn giải pháp này
+* Tại sao không chọn giải pháp khác
+
+Ví dụ:
+
+### Decision
+
+Sử dụng Remote State trên S3.
+
+### Reason
+
+* Team collaboration
+* Backup
+* Versioning
+
+### Alternative
+
+Local State.
+
+### Trade-off
+
+Tốn thêm chi phí S3 và DynamoDB.
 
 ---
 
-# Questions for Mentor
+# Kubernetes Production Concepts
 
-1. When should Terraform state be stored remotely instead of locally?
-2. When should we create reusable modules?
-3. What are the most common Terraform resources used in AWS production environments?
-4. What Terraform best practices should beginners adopt from the beginning?
+## ConfigMap
+
+Lưu configuration không nhạy cảm.
+
+Ví dụ:
+
+* API URL
+* Hostname
+* Feature Flags
 
 ---
 
-# Next Steps (Day 2)
+## Secret
 
-Topics to study:
+Lưu dữ liệu nhạy cảm:
 
-* Terraform State Management
+* Password
+* JWT Secret
+* API Key
+
+---
+
+## Liveness Probe
+
+Kiểm tra ứng dụng còn hoạt động hay không.
+
+Nếu fail:
+
+```text
+Restart Container
+```
+
+---
+
+## Readiness Probe
+
+Kiểm tra ứng dụng có sẵn sàng nhận traffic hay chưa.
+
+Nếu fail:
+
+```text
+Remove khỏi Service
+```
+
+---
+
+## Startup Probe
+
+Dùng cho ứng dụng khởi động chậm.
+
+Ví dụ:
+
+* Spring Boot
+* Django
+* Java Monolith
+
+---
+
+## Ingress
+
+Cung cấp:
+
+* Reverse Proxy
+* Routing
+* SSL Termination
+
+Flow:
+
+```text
+Internet
+    ↓
+Ingress
+    ↓
+Services
+    ↓
+Pods
+```
+
+---
+
+## Persistent Volume (PV)
+
+Storage thật trong cluster.
+
+Ví dụ:
+
+* EBS
+* EFS
+* NFS
+
+---
+
+## Persistent Volume Claim (PVC)
+
+Request sử dụng storage.
+
+Flow:
+
+```text
+Pod
+ ↓
+PVC
+ ↓
+PV
+ ↓
+Disk
+```
+
+---
+
+## NetworkPolicy
+
+Kiểm soát traffic giữa Pod.
+
+Tương tự:
+
+```text
+AWS Security Group
+```
+
+trong môi trường Kubernetes.
+
+---
+
+## Namespace
+
+Tách môi trường:
+
+```text
+dev
+staging
+prod
+```
+
+---
+
+## Horizontal Pod Autoscaler (HPA)
+
+Tự động scale Pod theo:
+
+* CPU
+* Memory
+* Custom Metrics
+
+Ví dụ:
+
+```text
+CPU > 70%
+      ↓
+Scale Out
+```
+
+---
+
+# 5. Kết nối kiến thức Terraform và Kubernetes
+
+Sau 3 ngày học, em nhận thấy Terraform và Kubernetes bổ trợ cho nhau:
+
+```text
+Terraform
+    ↓
+Provision Infrastructure
+(VPC, EKS, IAM, RDS)
+
+Kubernetes
+    ↓
+Deploy Applications
+(Pods, Services, Ingress)
+```
+
+Terraform giúp tạo nền tảng hạ tầng.
+
+Kubernetes giúp vận hành workload trên hạ tầng đó.
+
+---
+
+# 6. Những điều em hiểu rõ nhất
+
+* Infrastructure as Code
+* Terraform Workflow
+* Terraform State
 * Terraform Modules
-* Terraform Best Practices
-* Terraform Lifecycle
-* Terraform Backend
-* Remote State
-* AWS Resources with Terraform
+* Kubernetes Architecture
+* Pod
+* Deployment
+* Service
+* ConfigMap
+* Secret
+* Ingress
+* HPA
+
+---
+
+# 7. Những điều em cần đào sâu thêm
+
+## Terraform
+
+* Backend Migration
+* State Recovery
+* Workspace
+* Multi-environment Strategy
+* Advanced Modules
+
+## Kubernetes
+
+* Ingress Controller
+* CNI Networking
+* StorageClass
+* StatefulSet
+* Helm
+* Monitoring & Logging
+* EKS Production Architecture
+
+---
+
+# 8. Câu hỏi thảo luận với Mentor
+
+### Terraform
+
+1. Trong môi trường production, khi Terraform state bị corruption hoặc mất đồng bộ với hạ tầng thực tế, quy trình xử lý phổ biến là gì?
+
+2. Trong dự án lớn, khi nào nên tách một thành nhiều state files thay vì dùng một state duy nhất?
+
+3. Workspaces và thư mục tách biệt cho Dev/Staging/Prod thường được ưu tiên theo trường hợp nào?
+
+---
+
+### Kubernetes
+
+1. Trong thực tế EKS production, khi nào nên sử dụng Ingress và khi nào nên sử dụng LoadBalancer Service trực tiếp?
+
+2. Có best practice nào để quản lý Secret trên Kubernetes ngoài AWS Secrets Manager và External Secrets Operator không?
+
+3. HPA chỉ scale theo CPU/Memory có đủ cho production hay nên dùng custom metrics như request rate hoặc queue length?
+
+---
+
+# 9. Reflection
+
+Qua 3 ngày học, em đã chuyển từ việc chỉ biết sử dụng AWS Console sang hiểu rõ hơn về tư duy Infrastructure as Code và Container Orchestration.
+
+Terraform giúp em hiểu cách xây dựng hạ tầng có thể lặp lại, kiểm soát bằng version và làm việc nhóm hiệu quả.
+
+Kubernetes giúp em hiểu cách triển khai ứng dụng hiện đại với khả năng tự phục hồi, mở rộng và vận hành ổn định.
+
+Trong thời gian tới, em muốn tiếp tục đào sâu về:
+
+* AWS EKS
+* Terraform Production Architecture
+* Kubernetes Networking
+* Kubernetes Storage
+* Helm
+* GitOps
+* CI/CD Pipeline
+* Observability
+
+để có thể tự triển khai và vận hành một hệ thống cloud-native hoàn chỉnh trên AWS.
