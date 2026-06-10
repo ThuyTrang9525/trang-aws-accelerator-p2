@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandGrow Dashboard</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; }
+        body { font-family: 'Inter', system-ui; background: var(--bg); margin: 0; display: flex; }
+        .sidebar { width: 240px; background: #1e293b; height: 100vh; color: white; padding: 20px; }
+        .main { flex: 1; padding: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .status { color: #22c55e; font-weight: bold; }
+        h2 { color: #334155; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h3>HandGrow System</h3>
+        <nav>
+            <p>Dashboard</p>
+            <p>Farming Logs</p>
+            <p>Analytics</p>
+        </nav>
+    </div>
+    <div class="main">
+        <h1>Overview</h1>
+        <div class="grid">
+            <div class="card">
+                <h3>Soil Moisture</h3>
+                <p style="font-size: 2rem;">74%</p>
+                <span class="status">Optimal</span>
+            </div>
+            <div class="card">
+                <h3>System Status</h3>
+                <p style="font-size: 2rem;">Online</p>
+                <span class="status">K8s Ready</span>
+            </div>
+            <div class="card">
+                <h3>Crop Growth</h3>
+                <p style="font-size: 2rem;">82%</p>
+                <span class="status">Growing</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
